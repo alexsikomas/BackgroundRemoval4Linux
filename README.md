@@ -2,7 +2,10 @@
 
 *Made because I've given up on waiting for NVIDIA Broadcast to come to Linux.*
 
-## Usage
+## Requirements
+Install the following:
+* Python 3.13
+* v4l2loopback
 
 Make sure you have a v4l2loopback device, you can make one with the following command:
 
@@ -28,9 +31,29 @@ add the following line:
 options v4l2loopback video_nr=[int] card_label=[string label] 
 ```
 
-Run using:
+Download an RVM model from the [Github](https://github.com/PeterL1n/RobustVideoMatting#download). Only download models from the ONNX section, ResNet is higher quality than MobileNet.
+
+## Usage
+Setup a python virtual environment and install required packages:
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+At its most basic the script is run using a model path and device number of the v4l2loopback device:
 ```bash
 python main.py [model_path] [device_number]
+```
+
+There are other options like using a specific resolution & fps from your camera via:
+```bash
+python main.py [model_path] [device_number] --resolution=640,480 --fps=30
+```
+
+Or adding a downsample ratio, which is useful for performance. It will degrade the quality of the background mask but not of the resolution of the video.
+```bash
+python main.py [model_path] [device_number] --downsample_ratio=0.4
 ```
 
 Use `--help` to view all the possible options.
