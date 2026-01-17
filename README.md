@@ -1,4 +1,4 @@
-# RemoveBackground4Linux
+# BackgroundRemoval4Linux
 
 *Made because I've given up on waiting for NVIDIA Broadcast to come to Linux.*
 
