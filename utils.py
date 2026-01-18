@@ -40,22 +40,21 @@ def start_camera(target_fps: Optional[float], target_w: Optional[int], target_h:
     cap.set_fps(float(matched_frame.max_fps))
     return (cam, cap)
 
-def get_output_cam(num: int, width: int, height: int) -> tuple[Device, VideoOutput]:
+def get_output_cam(num: int, width: int, height: int, fps: float) -> tuple[Device, VideoOutput]:
     dev_out = Device.from_id(num)
     dev_out.open()
     out = VideoOutput(dev_out)
     out.set_format(width, height, "MJPG")
+    out.set_fps(fps)
     return (dev_out, out)
 
 # returns the index of the best mode
 def get_best_mode(fps: Optional[float], w: Optional[int], h: Optional[int], fts: list[FrameInfo]) -> int:
     match (fps, w, h):
         case (float(), int(), int()):
-            print("case 1")
             if (w,h,fps) in fts:
                 return fts.index((w,h,fps))
         case (float(), None, None):
-            print("case 2")
             matched_indicies = [i for i, ft in enumerate(fts) if ft[2] == fps]
             matched_fts = list(itemgetter(*matched_indicies)(fts))
             if isinstance(matched_fts[0], tuple):
@@ -64,7 +63,6 @@ def get_best_mode(fps: Optional[float], w: Optional[int], h: Optional[int], fts:
             else:
                 return matched_indicies[0]
         case (None, int(), int()):
-            print("case 3")
             matched_indicies = [i for i, ft in enumerate(fts) if (ft[0] == w and ft[1] == h)]
             matched_fts = list(itemgetter(*matched_indicies)(fts))
             if isinstance(matched_fts[0], tuple):
@@ -73,7 +71,6 @@ def get_best_mode(fps: Optional[float], w: Optional[int], h: Optional[int], fts:
             else:
                 return matched_indicies[0]
         case (None, None, None):
-            print("case 4")
             matched_frame = heuristic_match(fts)
             return fts.index(matched_frame)
 

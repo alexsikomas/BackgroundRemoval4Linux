@@ -62,18 +62,20 @@ if __name__ == "__main__":
 
     (cam, cap) = start_camera(fps, cam_res[0], cam_res[1])
     format = cap.get_format()
-    (dev_out, out) = get_output_cam(args.video_output, format.width, format.height)
+    (dev_out, out) = get_output_cam(args.video_output, format.width, format.height, float(cap.get_fps()))
 
     bg_arr: None|np.ndarray = None
     if args.filter in ['black', 'green', 'blue']:
         bg_arr = np.zeros((format.height, format.width, 3), dtype=np.uint8)
 
+    options = rt.SessionOptions()
+    options.log_severity_level = 1 
     providers = [
     'CUDAExecutionProvider',
     'MIGraphXExecutionProvider',
     'CPUExecutionProvider']
 
-    session = rt.InferenceSession(args.path, providers=providers)
+    session = rt.InferenceSession(args.path, providers=providers, sess_options=options)
     print(f"Running on: {session.get_providers()[0]}")
     rvm = RVMInference(session)
 
