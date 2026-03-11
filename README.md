@@ -40,12 +40,13 @@ Setup a python virtual environment and install required packages:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install opencv-python numpy pyvirtualcam
 ```
 
 At its most basic you can run the script without any arguments which will create a blur effect.
 ```bash
-python rvm.py
+python run.py
 ```
 
 You can also do a green screen:
