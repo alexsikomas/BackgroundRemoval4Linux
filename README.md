@@ -35,7 +35,9 @@ options v4l2loopback video_nr=[int] card_label=[string label]
 
 Download an RVM model from the [Github](https://github.com/PeterL1n/RobustVideoMatting#download). Only download models from the torchscript section.
 
-## Usage
+The default location that is check for is `~/rvm_models/rvm_resnet50_fp16.torchscript`, if you want to use a different model or have it in a different location use the `--model` argument to change the path.
+
+### Python
 Setup a python virtual environment and install required packages:
 ```bash
 python -m venv .venv
@@ -43,6 +45,8 @@ source .venv/bin/activate
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 pip install opencv-python numpy pyvirtualcam
 ```
+
+## Usage
 
 At its most basic you can run the script without any arguments which will create a blur effect.
 ```bash
@@ -65,10 +69,11 @@ python run.py --bg-mode image --bg-image ~/wallpaper.jpg
 ```
 
 ## Mamba
-It can be cumbersome to run ML scripts sometimes due to version conflicts with CUDA, i.e. if you have a more up-to-date version of CUDA. You can solve this issue by using a tool like Mamba.
+If you had trouble trying to run the script through a virtual environment you can try this approach using Mamba.
 
-Follow this [guide](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html) to install Mamba. Essentially, install the miniforge package from your distros package manager.
+Follow this [guide](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html) to install Mamba. Essentially, install the miniforge package from your distro's package manager.
 
+Then run the following commands to set the environment up:
 ```bash
 mamba create -n pytorch python=3.12
 mamba activate pytorch
@@ -77,4 +82,6 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 pip install pyvirtualcam
 ```
 
-If you got an error while trying to run the `pip` commands just run `mamba install pip`
+If you got an error while trying to run the `pip` commands just run `mamba install pip`.
+
+You can now go back to the usage section and re-run the commands.
